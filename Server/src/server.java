@@ -7,6 +7,7 @@ public class server {
     private static final String PALABRA_CLAVE = "stop";
 
     public static void main(String[] args) {
+    	boolean stop = false;
         try (ServerSocket serverSocket = new ServerSocket(PUERTO)) {
         	System.out.println("Palabra secreta : stop");
             System.out.println("Iniciando servidor... OK");
@@ -24,13 +25,13 @@ public class server {
                 while (true) {
                     mensajeCliente = input.readLine();
                     if (mensajeCliente == null) {
-                    	return;
+                    	stop = true;
                     };
                     System.out.println("Mensaje recibido del cliente: " + mensajeCliente);
 
                     if (mensajeCliente.equalsIgnoreCase(PALABRA_CLAVE)) {
                         System.out.println("Cerrando servidor... OK");
-                        return;
+                        stop = true;
                     }
 
                     System.out.print("Escribe tu mensaje para el cliente: ");
@@ -38,7 +39,7 @@ public class server {
                     output.println(mensajeServidor);
 
                     if (mensajeServidor.equalsIgnoreCase(PALABRA_CLAVE)) {
-                    	return;
+                    	stop = true;
                     }
                 }
             }
