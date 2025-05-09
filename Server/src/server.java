@@ -44,8 +44,9 @@ public class server {
             serverInputThread.start();
 
             while (isRunning && !serverSocket.isClosed()) {
+            	Socket clientSocket = null;
                 try {
-                    Socket clientSocket = serverSocket.accept();
+                	clientSocket = serverSocket.accept();
                     if (clients.size() < maxClients) {
                         handleNewClient(clientSocket);
                     } else {
@@ -54,6 +55,7 @@ public class server {
                 } catch (IOException e) {
                     if (!serverSocket.isClosed()) {
                         System.err.println("Error accepting client connection: " + e.getMessage());
+                        clientSocket.close();
                     }
                 }
             }
