@@ -44,7 +44,7 @@ public class server {
             serverInputThread.start();
 
             while (isRunning && !serverSocket.isClosed()) {
-            	Socket clientSocket = null;
+            	Socket clientSocket;
                 try {
                 	clientSocket = serverSocket.accept();
                     if (clients.size() < maxClients) {

@@ -53,7 +53,6 @@ public class client {
                 if (userInput.equals(clientKeyword)) {
                     System.out.println("> Client keyword detected!");
                     isRunning = false;
-                    break;
                 }
             }
 
