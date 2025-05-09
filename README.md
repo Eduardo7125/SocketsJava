@@ -1,6 +1,80 @@
-# Chat Cliente-Servidor en Java
+# Chat Cliente-Servidor con Soporte Multicliente
 
-Este es un programa simple de chat implementado en Java que utiliza sockets para la comunicación entre un **servidor** y un **cliente**. El servidor y el cliente pueden enviarse mensajes entre sí de manera bidireccional. El programa finaliza cuando cualquiera de las partes envía la palabra clave de cierre.
+Este proyecto implementa un sistema de chat cliente-servidor en Java que permite múltiples conexiones simultáneas de clientes al servidor.
+
+## Características
+
+- Servidor que acepta múltiples conexiones de clientes
+- Gestión de conexiones mediante hilos
+- Palabras clave personalizadas para cerrar chats
+- Cierre automático del servidor cuando no hay clientes conectados
+- Reutilización de slots de conexión
+
+## Estructura del Proyecto
+
+```
+.
+├── src/
+│   ├── Server.java
+│   └── Client.java
+└── README.md
+```
+
+## Compilación
+
+Para compilar el proyecto, ejecuta los siguientes comandos:
+
+```bash
+# Compilar el servidor y el cliente
+javac src/Server.java src/Client.java
+```
+
+## Ejecución
+
+### Servidor
+
+Para iniciar el servidor, usa el siguiente comando:
+
+```bash
+java -cp src Server <puerto> <palabra_clave_servidor> <max_clientes>
+```
+
+Ejemplo:
+```bash
+java -cp src Server 1234 Cleopatra 5
+```
+
+### Cliente
+
+Para iniciar un cliente, usa el siguiente comando:
+
+```bash
+java -cp src Client <host> <puerto> <palabra_clave_cliente>
+```
+
+Ejemplo:
+```bash
+java -cp src Client localhost 1234 "Marc Antoni"
+```
+
+## Funcionamiento
+
+1. El servidor inicia y espera conexiones de clientes
+2. Cada cliente se conecta al servidor y envía su palabra clave
+3. Los clientes pueden enviar mensajes al servidor
+4. El servidor responde a cada cliente
+5. Para cerrar un chat:
+   - Si un cliente usa su palabra clave, solo se cierra su chat
+   - Si el servidor usa la palabra clave de un cliente, se cierra ese chat
+   - Si el servidor usa su palabra clave, se cierran todos los chats
+6. El servidor se cierra automáticamente cuando no hay clientes conectados
+
+## Notas
+
+- El número máximo de clientes debe especificarse al iniciar el servidor
+- Cada cliente debe tener su propia palabra clave
+- Los mensajes se muestran en la consola con el formato especificado
+- El servidor responde a los clientes en el orden en que recibe los mensajes
 
 ## Requisitos
 
