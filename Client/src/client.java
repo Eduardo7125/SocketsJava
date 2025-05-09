@@ -10,6 +10,7 @@ public class client {
     private PrintWriter out;
     private BufferedReader in;
     private Scanner scanner;
+    private boolean isRunning = true;
 
     public client(String host, int port, String clientKeyword) {
         this.host = host;
@@ -33,7 +34,7 @@ public class client {
             Thread readThread = new Thread(() -> {
                 try {
                     String message;
-                    while ((message = in.readLine()) != null) {
+                    while (isRunning && (message = in.readLine()) != null) {
                         System.out.println("#Rebut del servidor: " + message);
                     }
                 } catch (IOException e) {
@@ -45,12 +46,13 @@ public class client {
             readThread.start();
 
             String userInput;
-            while ((userInput = scanner.nextLine()) != null) {
+            while (isRunning && (userInput = scanner.nextLine()) != null) {
                 System.out.println("#Enviar al servidor: " + userInput);
                 out.println(userInput);
 
                 if (userInput.equals(clientKeyword)) {
                     System.out.println("> Client keyword detected!");
+                    isRunning = false;
                     break;
                 }
             }
@@ -64,6 +66,7 @@ public class client {
 
     private void close() {
         try {
+            isRunning = false;
             if (out != null) out.close();
             if (in != null) in.close();
             if (socket != null) socket.close();
@@ -77,20 +80,23 @@ public class client {
     }
 
     public static void main(String[] args) {
+        boolean validArgs = true;
         if (args.length != 3) {
             System.out.println("Usage: java Client <host> <port> <client_keyword>");
-            return;
+            validArgs = false;
         }
 
-        try {
-            String host = args[0];
-            int port = Integer.parseInt(args[1]);
-            String clientKeyword = args[2];
+        if (validArgs) {
+            try {
+                String host = args[0];
+                int port = Integer.parseInt(args[1]);
+                String clientKeyword = args[2];
 
-            client client = new client(host, port, clientKeyword);
-            client.start();
-        } catch (NumberFormatException e) {
-            System.out.println("Invalid port number");
+                client client = new client(host, port, clientKeyword);
+                client.start();
+            } catch (NumberFormatException e) {
+                System.out.println("Invalid port number");
+            }
         }
     }
 } 
